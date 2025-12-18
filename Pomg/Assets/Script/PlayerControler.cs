@@ -2,26 +2,31 @@ using UnityEngine;
 
 public class PlayerControler : MonoBehaviour
 {
+    [Header("Speed Player")]
+    // --- Speed Player ---
     [SerializeField]
     float speedPlayer = 2.5f;
 
-    Vector3 direction;
+    [Header("KeyCode to move")]
+    // --- KeyCode ---
+    [SerializeField]
+    KeyCode CodeUp = KeyCode.W;
+    [SerializeField]
+    KeyCode CodeDown = KeyCode.S;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-    }
+    // Start
+    void Start() {}
 
-    // Update is called once per frame
+    // Update
     void Update()
     {
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(CodeUp))
         {
-            transform.position = Vector3.up * speedPlayer * Time.deltaTime;
+            transform.position += Vector3.up * speedPlayer * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(CodeDown))
         {
-            transform.position = Vector3.down * speedPlayer * Time.deltaTime;
+            transform.position += Vector3.down * speedPlayer * Time.deltaTime;
         }
     }
 

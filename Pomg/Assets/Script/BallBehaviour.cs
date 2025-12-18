@@ -1,7 +1,9 @@
+using TMPro;
 using UnityEngine;
 
 public class BallBehaviour : MonoBehaviour
 {
+    // ---------------------------------------- Values ------------------------------------ // 
     [SerializeField]
     float speedBall = 2.5f;
     [SerializeField]
@@ -17,7 +19,10 @@ public class BallBehaviour : MonoBehaviour
 
     Vector3 ballOrigen;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    // ---------------------------------------- Game & Update ------------------------------------ //
+
+    // Start
     void Start()
     {
         ballOrigen = transform.position;
@@ -26,7 +31,8 @@ public class BallBehaviour : MonoBehaviour
         ResetBall();
     }
 
-    // Update is called once per frame
+
+    // Update
     void Update()
     {
         transform.position += direction.normalized * Time.deltaTime * speedBall;
@@ -45,7 +51,11 @@ public class BallBehaviour : MonoBehaviour
         }
     }
 
+    // -------------------------------------------------------------------------------------------- //
 
+    /// <summary>
+    /// Resetea la bola y randomiza la posicion de salida
+    /// </summary>
     void ResetBall()
     {
         speedBall = _speedBall;
@@ -65,36 +75,69 @@ public class BallBehaviour : MonoBehaviour
         } while (direction.y == 0);
     }
 
+    bool SpeedComprobation(float speedActual)
+    {
+        bool speedComprobation = false;
 
+        if (speedActual < maxSpeed)
+        {
+            speedComprobation = true;
+        }
+
+        return speedComprobation;
+    }
+
+
+    // -------------------------------------- Colission & Trigger ------------------------------------ //
+
+    /// <summary>
+    /// Dectect colission on player & border
+    /// </summary>
+    /// <param name="collision"></param>
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(this.name.ToString() + " is collision on " + collision.gameObject.name.ToString());
+        float _increment = increment;
+        
+        //Debug.Log(this.name.ToString() + " is collision on " + collision.gameObject.name.ToString());
 
         if (collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("PLAYEEEER");
 
             direction.x *= -1;
-            speedBall *= increment;
+            
 
         } else if (collision.gameObject.CompareTag("Border"))
         {
             Debug.Log("BORDEEER");
 
             direction.y *= -1;
-            speedBall *= increment;
         }
+        
+
+        if (SpeedComprobation(speedBall))
+        {
+            speedBall *= _increment;
+        }
+        
     }
 
+
+    /// <summary>
+    /// Detect trigger zone goal
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("GoalZone1"))
         {
-            ResetBall();
+            ScoreManager.instance.GoalPlayerTwo();
         } else if (other.gameObject.CompareTag("GoalZone2"))
         {
-            ResetBall();
+            ScoreManager.instance.GoalPlayerOne();
         }
-
+        ResetBall();
     }
+
+    // ---------------------------------------------------------------------------------------------- //
 }
