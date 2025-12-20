@@ -30,16 +30,18 @@ public class ScoreManager : MonoBehaviour
     public void GoalPlayerOne()
     {
         playerOneGoal++;
+        UpdateGoalText();
     }
     
     public void GoalPlayerTwo()
     {
         playerTwoGoal++;
+        UpdateGoalText();
     }
 
     void UpdateGoalText()
     {
-        textPoints.text = playerOneGoal.ToString() + " || " + playerTwoGoal.ToString();
+        textPoints.text = playerOneGoal.ToString("00") + " || " + playerTwoGoal.ToString("00");
     }
  
 }

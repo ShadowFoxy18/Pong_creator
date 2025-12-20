@@ -118,6 +118,9 @@ public class BallBehaviour : MonoBehaviour
         if (SpeedComprobation(speedBall))
         {
             speedBall *= _increment;
+        } else
+        {
+            speedBall = maxSpeed;
         }
         
     }
